@@ -2,8 +2,8 @@ name: Build and Release
 # on tags creaete
 on:
   push:
-      tags:
-      - "v*.*.*"
+    tags:
+      - '*'
 
 jobs:
   build-and-release:
