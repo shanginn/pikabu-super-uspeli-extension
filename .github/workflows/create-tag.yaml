@@ -31,6 +31,7 @@ jobs:
           echo "Checking for existing tag 'v$version'"
           tag_exists=$(curl --silent --show-error --header "Authorization: Bearer $GITHUB_TOKEN" \
             https://api.github.com/repos/${{ github.repository }}/git/ref/tags/v$version)
+          echo $tag_exists
           if [ "$tag_exists" != "[]" ]; then
             echo "Tag 'v$version' already exists"
             echo "::set-output name=tag_exists::true"
