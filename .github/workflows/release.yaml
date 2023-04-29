@@ -24,18 +24,14 @@ jobs:
       - name: Build and pack
         run: npm run repack
 
-      - name: Get output file
-        id: get_output_file
-        run: echo "OUTPUT_FILE=$(ls | grep super-uspeli.*.zip)" >> $GITHUB_ENV
-
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.sha }}
-          release_name: Release v${{ github.sha }}
+          tag_name: v${{ env.GITHUB_SHA }}
+          name: Release v${{ env.GITHUB_SHA }}
           draft: false
           prerelease: false
 
@@ -45,6 +41,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ env.OUTPUT_FILE }}
-          asset_name: ${{ env.OUTPUT_FILE }}
+          asset_path: ./super-uspeli.zip
+          asset_name: super-uspeli.zip
           asset_content_type: application/zip
