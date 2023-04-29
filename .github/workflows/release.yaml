@@ -1,9 +1,9 @@
 name: Build and Release
-
+# on tags creaete
 on:
   push:
-    branches:
-      - master
+      tags:
+      - "v*.*.*"
 
 jobs:
   build-and-release:
@@ -29,4 +29,3 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: release/super-uspeli*.zip
-          name: ${{ github.sha }}
