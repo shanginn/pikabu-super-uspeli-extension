@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Супер Успели",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Сохраняет удалённые комменты",
   "icons": {
     "16": "icons/icon_16.png",
