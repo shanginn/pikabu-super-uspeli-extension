@@ -27,20 +27,6 @@ jobs:
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ env.GITHUB_SHA }}
-          name: Release v${{ env.GITHUB_SHA }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./super-uspeli.zip
-          asset_name: super-uspeli.zip
-          asset_content_type: application/zip
+          files: release/super-uspeli*.zip
+          name: ${{ github.sha }}

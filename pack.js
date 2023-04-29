@@ -3,7 +3,9 @@ const { parse, resolve } = require('path');
 const AdmZip = require('adm-zip');
 
 try {
-  const { base } = parse(__dirname);
+  const { name: base } = JSON.parse(
+    readFileSync(resolve(__dirname, 'package.json'), 'utf8')
+  );
   const { version } = JSON.parse(
     readFileSync(resolve(__dirname, 'build', 'manifest.json'), 'utf8')
   );
