@@ -1,0 +1,52 @@
+name: Create Tag from package.json
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Get version from package.json
+        id: package_version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
+      - name: Check if tag exists
+        id: check_tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="${{ steps.package_version.outputs.version }}"
+          echo "Checking for existing tag 'v$version'"
+          tag_exists=$(curl --silent --show-error --header "Authorization: Bearer $GITHUB_TOKEN" \
+            https://api.github.com/repos/${{ github.repository }}/git/ref/tags/v$version)
+          if [ "$tag_exists" != "[]" ]; then
+            echo "Tag 'v$version' already exists"
+            echo "::set-output name=tag_exists::true"
+          else
+            echo "Tag 'v$version' does not exist"
+            echo "::set-output name=tag_exists::false"
+          fi
+
+      - name: Create tag if not exists
+        if: steps.check_tag.outputs.tag_exists == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="${{ steps.package_version.outputs.version }}"
+          echo "Creating tag 'v$version'"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -a "v$version" -m "Create tag 'v$version' from GitHub Actions"
+          git push origin "refs/tags/v$version"
