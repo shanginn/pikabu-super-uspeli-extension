@@ -1,19 +1,18 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> Super Uspeli
+# <img src="public/icons/icon_48.png" width="45" align="left"> Супер Успели!
 
-My Chrome Extension
+> Расширение для сохранения удалённых комментариев с Pikabu.
 
-## Features
+## Установка
+Справа есть [releases](https://github.com/shanginn/pikabu-super-uspeli-extension/releases),
+там качайте архив с последней версией расширения super-uspeli-v*.zip
 
-- Feature 1
-- Feature 2
+И закидывайте его в расширения хрома в режиме разработчика.
 
-## Install
+Дальше всё должно работать автоматом
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
+## Ахтунг
 
-## Contribution
-
-Suggestions and pull requests are welcomed!.
+Расширение в глубочайшей альфе, поэтому не удивляйтесь, если что-то не будет работать.
 
 ---
 
