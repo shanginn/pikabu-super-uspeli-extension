@@ -1,7 +1,12 @@
-import Surreal from "surrealdb.js";
+import Surreal from 'surrealdb.js';
 
 export default class DatabaseConnection {
   static #instance = null;
+  static #connectPromise = null;
+
+  constructor() {
+    throw new Error('This class cannot be instantiated.');
+  }
 
   static async #connect() {
     await Surreal.Instance.connect('http://surrealdb.shanginn.io:11181/rpc');
@@ -21,13 +26,18 @@ export default class DatabaseConnection {
       }
     }
 
-
     if (!isAuthenticated) {
       let credentials;
 
       try {
-        credentials = await this.#getStoredCredentials() || await this.#createRandomUser();
-        token = await this.#authenticateWithCredentials(credentials, namespace, database);
+        credentials =
+          (await this.#getStoredCredentials()) ||
+          (await this.#createRandomUser());
+        token = await this.#authenticateWithCredentials(
+          credentials,
+          namespace,
+          database
+        );
         await this.#storeToken(token);
       } catch (error) {
         console.error('Error authenticating with credentials:', error);
@@ -36,7 +46,11 @@ export default class DatabaseConnection {
         await this.#clearToken();
 
         credentials = await this.#createRandomUser();
-        token = await this.#authenticateWithCredentials(credentials, namespace, database);
+        token = await this.#authenticateWithCredentials(
+          credentials,
+          namespace,
+          database
+        );
         await this.#storeToken(token);
       }
     }
@@ -128,7 +142,8 @@ export default class DatabaseConnection {
 
   static #generateRandomCredentials() {
     function randomString(length) {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const chars =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       let result = '';
       for (let i = 0; i < length; i++) {
         result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -156,7 +171,9 @@ export default class DatabaseConnection {
 
   static get instance() {
     if (!this.#instance) {
-      throw new Error('Instance not initialized. Call `DatabaseConnection.init()` first.');
+      throw new Error(
+        'Instance not initialized. Call `DatabaseConnection.init()` first.'
+      );
     }
 
     return this.#instance;
@@ -164,7 +181,11 @@ export default class DatabaseConnection {
 
   static async init() {
     if (!this.#instance) {
-      await this.#connect();
+      if (!this.#connectPromise) {
+        this.#connectPromise = this.#connect();
+      }
+
+      await this.#connectPromise;
     }
   }
 }

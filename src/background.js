@@ -1,23 +1,22 @@
 'use strict';
 
 import ProcessedComments from './ProcessedComments.js';
-import DatabaseConnection from "./DatabaseConnection";
+import DatabaseConnection from './DatabaseConnection';
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'SAVE_COMMENT') {
     const comment = request.payload.comment;
     const processedComments = new ProcessedComments();
 
-    console.log('Processing comment:', comment)
-
+    console.log('Processing comment:', comment);
 
     processedComments.has(comment.id).then(async (processed) => {
-        console.log('Processed:', processed)
-        if (!processed) {
-          await processedComments.add(comment.id);
-          await saveCommentToDB(comment);
-        }
-      });
+      console.log('Processed:', processed);
+      if (!processed) {
+        await processedComments.add(comment.id);
+        await saveCommentToDB(comment);
+      }
+    });
 
     return true;
   }
@@ -43,8 +42,8 @@ async function saveCommentToDB(commentData) {
   }
 
   try {
-    await DatabaseConnection.instance.create("comments", commentData);
-    console.log('Comment saved to DB:', commentData.id)
+    await DatabaseConnection.instance.create('comments', commentData);
+    console.log('Comment saved to DB:', commentData.id);
   } catch (error) {
     console.error('Error saving comment to DB:', error);
   }

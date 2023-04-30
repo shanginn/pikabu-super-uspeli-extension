@@ -15,21 +15,12 @@
   "action": {
     "default_title": "Super Uspeli"
   },
-  "permissions": [
-    "storage",
-    "activeTab",
-    "scripting"
-  ],
+  "permissions": ["storage", "activeTab", "scripting"],
   "content_scripts": [
     {
-      "matches": [
-        "http://*.pikabu.ru/*",
-        "https://*.pikabu.ru/*"
-      ],
+      "matches": ["http://*.pikabu.ru/*", "https://*.pikabu.ru/*"],
       "run_at": "document_idle",
-      "js": [
-        "contentScript.js"
-      ]
+      "js": ["contentScript.js"]
     }
   ]
 }
