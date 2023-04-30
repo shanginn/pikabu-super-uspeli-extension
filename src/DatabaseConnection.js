@@ -9,7 +9,7 @@ export default class DatabaseConnection {
   }
 
   static async #connect() {
-    await Surreal.Instance.connect('http://surrealdb.shanginn.io:11181/rpc');
+    await Surreal.Instance.connect('https://surreal-db.fly.dev/rpc');
 
     const namespace = 'pikabu';
     const database = 'super-uspeli';
