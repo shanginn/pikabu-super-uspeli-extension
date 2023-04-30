@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Clean release folder
+        run: rm -rf release/*
+
       - name: Build and pack
         run: npm run repack
 
